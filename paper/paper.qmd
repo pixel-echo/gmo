@@ -1,13 +1,19 @@
 ---
-title: "The Effect of GMO"
+title: "Assesing the Environmental Efficacy of Genetically Modified Crops"
+subtitle: "A case study of Upland Cotton Cultivation in the United States"
 format: 
   pdf:
     documentclass: article
     toc: true
     toc-title: Contents
-    number-sections: true
+    number-sections: false
     colorlinks: true
+    echo: false
+    warning: false
+    bibliography: references.bib
 ---
+
+# Introduction 
 # Data
 
 ```{r}
@@ -20,27 +26,57 @@ data <- read_csv("../data/clean_data.csv")
 To analyze the effects of genetic engineering on upland cotton cultivation, raw data was obtained from the United States Department of Agriculture. These datasets were cleaned and transformed into a clean dataset using R and the tidyverse package. The resulting dataset consists of the variables "Year", "Percent GM", "Total Acres", "Acres Harvested", "Percent Abandoned", and "Yield". 
 
 
-The variable "Year" encompasses observations spanning from 2000 till 2023. "Percent GM" denotes the percentage of cotton planted that was genetically modified. "Total Acres" represents the total land area dedicated to farm upland cotton in the United States in acres, while "Acres Harvested" is the number of acres that were actually harvested. "Percent Abandoned" is the percentage of cotton harvested that was abandoned and deemed as unacceptable yield. The variable "Yield" measures cotton harvested in pounds per acre that was deemed acceptable. 
+The variable "Year" encompasses observations spanning from 2000 till 2023. "Percent GM" denotes the percentage of cotton planted that was genetically modified. "Total Acres" represents the total land area in acres dedicated to farming upland cotton in the United States, while "Acres Harvested" is the number of acres that were actually harvested. "Percent Abandoned" is the percentage of cotton that was not harvested and was abandoned. The variable "Yield" measures cotton harvested in pounds per acre.
 
 
+This dataset was generated over other potential datsets since the original source has high credibility, and the cleaned variables "Year", "Percent GM", "Total Acres", "Acres Harvested", "Percent Abandoned", and "Yield" help investigate trends in upland cotton cultivation that have occurred in recent American history. 
+
+```{r}
+data |>
+  select(percent_gm, year) |>
+  ggplot(
+    aes(x = year, y = percent_gm)
+  ) +
+  geom_line() +
+  theme_bw() +
+  theme(
+    axis.title.x = element_text(size = 8),
+    axis.title.y = element_text(size = 8)
+  ) +
+  labs(x = "Year", y = "Percent Genetically Modified")
+```
+
+The percent of genetically modified upland cotton planted in the United States
+increased drastically from 2000 to 2023. Starting with a minimum value of 61% in 2000, the percentage increased till it reached its peak in 2019 at 98%. The mean percentage of genetically modified upland cotton during this time period was 87%. 
+This variable is difficult to measure as cross breeding of organic and gmo crops can occur frequently. 
+
+Acreage dedicated to upland cotton in the United States varied drastically from 2000 to 2023 but seems to decrease overtime. It reached a minimum value of 8,422 acres in 2015 and a peak of 15,499 acres in 2001. The mean acreage dedicated to planting upland cotton in the United States was 12,174 acres. The total acerage of upland cotton harvested follows a similar trend. The number of harvested acres has the overarching trend of decreasing over time. Harvested acres had a peak value of 13,560 in 2001 and a minimum value of 7,132 in 2022. From 2000 to 2023 the mean value of harvested acres was 10,072.  
 
 
+```{r}
+data |>
+  ggplot(aes(x = year)) +
+  geom_bar(aes(y = total_acres), stat = "identity", position = "stack", width = 0.4) +
+  geom_bar(aes(y = harvested_acres, fill = "Harvested Acres"), stat = "identity", position = "stack", width = 0.4) +
+  labs(x = "Year", y = "Total Upland Cotton Planted", fill = "")
+```
 
+The percentage of abandoned harvest has a trend of increasing over time. In the year 2010 only 2.5% of the planted upland cotton was abandoned compared to 2022 when around 48% of upland cotton planted was abandoned. The mean percentage of upland cotton abandoned was 16%. 
 
+```{r}
+data |>
+  ggplot(aes(x = year, y = percent_abandoned)) +
+  geom_bar(stat = "identity")
+```
 
+```{r}
+data |>
+  ggplot(aes(x = year, y = yield)) +
+  geom_line()
+```
+In the United States Upland cotton yield has been steadily increasing over time from 2000 to 2023. Total yield reached a maximum amount in 2022 with 942 pounds per acre compared to the minimum yield of 626 pounds per acre in 2000. The mean yield during this time period was 801 pounds per acre. 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Model
+# Results
+# Discussion
+# References
