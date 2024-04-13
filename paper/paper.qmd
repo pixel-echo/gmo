@@ -18,6 +18,8 @@ format:
 
 ```{r}
 library(tidyverse)
+library(boot)
+library(tidymodels)
 ```
 
 ```{r}
@@ -81,11 +83,87 @@ To study the impact that genetically modified crop production has linear regress
 
 Due to the limited data available bootstrapping was used. 
 
-
-Want to study the impact that GMO has on total land usage, land efficiency, and yield. 
-Predict the land usage needed for the yield 2022 yield if GMO is 0.
-
 # Results
+
+```{r}
+set.seed(90)
+
+model_land_efficiency <- function(formula, data, indices) {
+  d <- data[indices,]
+  fit <- lm(formula, data=d)
+  return(coef(fit))
+}
+
+results <- boot(data=data, statistic = model_land_efficiency, R = 10000, formula=percent_abandoned~percent_gm)
+mean_coef <- colMeans(results$t)
+
+data |>
+  ggplot(aes(x=percent_gm, y=percent_abandoned)) +
+  geom_point() +
+  geom_abline(intercept = mean_coef[1], slope = mean_coef[2], color = "blue")
+
+
+```
+
+```{r}
+set.seed(47)
+
+model_yield <- function(formula, data, indices) {
+  d <- data[indices,]
+  fit <- lm(formula, data=d)
+  return(coef(fit))
+}
+
+results <- boot(data=data, statistic = model_yield, R = 10000, formula=yield~percent_gm)
+mean_coef <- colMeans(results$t)
+
+data |>
+  ggplot(aes(x=percent_gm, y=yield)) +
+  geom_point() +
+  geom_abline(intercept = mean_coef[1], slope = mean_coef[2], color = "blue")
+```
+
+```{r}
+set.seed(258)
+
+model <- lm(yield ~ total_acres + percent_gm, data=data)
+rse <- sigma(model)
+coefficients <- coef(model)
+
+intercept <- coefficients[1]
+slope <- coefficients[2]
+
+data <- data |>
+  mutate(
+    predicted_no_gm_yield = intercept + slope * total_acres + rnorm(n(), mean = 0, sd=rse)
+  )
+
+data |>
+  ggplot(aes(x = total_acres)) +
+  geom_point(aes(y = yield, color = "actual yield")) +
+  geom_point(aes(y = predicted_no_gm_yield, color = "predicted yield"))
+```
+
+```{r}
+set.seed(326)
+
+model <- lm(total_acres ~ yield + percent_gm, data=data)
+rse <- sigma(model)
+coefficients <- coef(model)
+
+intercept <- coefficients[1]
+slope <- coefficients[2]
+
+data <- data |>
+  mutate(
+    predicted_land_use = intercept + slope * yield + rnorm(n(), mean = 0, sd=rse)
+  )
+
+data |>
+  ggplot(aes(x = yield)) +
+  geom_point(aes(y = total_acres, color = "actual land use")) +
+  geom_point(aes(y = predicted_land_use, color = "predicted land use"))
+```
 
 # Discussion
 
