@@ -31,4 +31,4 @@ yield_data <- yield_data |>
 
 data <- merge(gmo_data, yield_data, by = "year", all = TRUE)
 
-write_csv(data, "data/analysis_data.csv")
+write_csv(data, "data/clean_data.csv")

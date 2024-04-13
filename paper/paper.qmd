@@ -1,0 +1,46 @@
+---
+title: "The Effect of GMO"
+format: 
+  pdf:
+    documentclass: article
+    toc: true
+    toc-title: Contents
+    number-sections: true
+    colorlinks: true
+---
+# Data
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+data <- read_csv("../data/clean_data.csv")
+```
+To analyze the effects of genetic engineering on upland cotton cultivation, raw data was obtained from the United States Department of Agriculture. These datasets were cleaned and transformed into a clean dataset using R and the tidyverse package. The resulting dataset consists of the variables "Year", "Percent GM", "Total Acres", "Acres Harvested", "Percent Abandoned", and "Yield". 
+
+
+The variable "Year" encompasses observations spanning from 2000 till 2023. "Percent GM" denotes the percentage of cotton planted that was genetically modified. "Total Acres" represents the total land area dedicated to farm upland cotton in the United States in acres, while "Acres Harvested" is the number of acres that were actually harvested. "Percent Abandoned" is the percentage of cotton harvested that was abandoned and deemed as unacceptable yield. The variable "Yield" measures cotton harvested in pounds per acre that was deemed acceptable. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
