@@ -76,7 +76,17 @@ data |>
 ```
 In the United States Upland cotton yield has been steadily increasing over time from 2000 to 2023. Total yield reached a maximum amount in 2022 with 942 pounds per acre compared to the minimum yield of 626 pounds per acre in 2000. The mean yield during this time period was 801 pounds per acre. 
 
-# Model
+# Models
+To study the impact that genetically modified crop production has linear regression models were constructed to study the impact on yield, land utilization, and total land usage.
+
+Due to the limited data available bootstrapping was used. 
+
+
+Want to study the impact that GMO has on total land usage, land efficiency, and yield. 
+Predict the land usage needed for the yield 2022 yield if GMO is 0.
+
 # Results
+
 # Discussion
+
 # References
