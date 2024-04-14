@@ -1,6 +1,7 @@
 ---
 title: "The Impact of Genetically Engineered Upland Cotton on Land Utilization"
 abstract: "This paper examines the environmental impact of genetically modified upland cotton production in the United States. Linear regression models were employed to analyze the disparities in land usage between genetically engineered cotton and non-engineered cotton cultivation. The results revealed a significant difference in land usage, indicating the efficiency of genetically engineered cotton cultivation. This study aims to contribute to the growing discourse on sustainability within the agricultural domain." 
+author: Tara Chakkithara
 format: 
   pdf:
     documentclass: article
@@ -96,70 +97,77 @@ Upland cotton yield in the United States has been steadily increasing over time 
 
 # Models
 
-Many linear regression models were employed to study the long term impacts of genetically engineering Upland cotton. First, 2 separate models were created with bootstrapping to infer the impact GMO cotton had on abandoned crop and yield.
+To study the long term trends in cotton cultivation from 2000 to 2023, four distinct linear models were constructed. Two of these models were created to analyze overarching trends in cotton production, while the other two were designed to investigate the disparities between genetically engineered cotton and non-GMO cotton. 
 
-Additional 2 multiple linear regression models were created to infer the discrepancies in land usage between GMO cotton and non GMO cotton. 
+All models utilized in this study were generated using the tidymodels package. Due to the limited amount of data, bootstrapping using the boot package was also employed for certain models to enhance its accuracy. 
 
-Due to the limited data available bootstrapping with the boot package was used to enhance the accuracy of the coefficients estimated. All models were built using the tidymodels package.
+## Inferencing Long Term Trends
 
-The first model examines the impact of GMO cotton on the percentage of crop abandoned.  
+The first model constructed investigates the influence of genetically engineered cotton on the percentage of planted cotton that was abandoned, using bootstrapping. Thus, in this model GMO cotton acts at the independent variable $X$ and percentage of abandoned cotton represents the dependent variable $Y$. 
 
 $$Y = 0.33X - 11.88$$
 
-The second model examines the impact of GMO cotton on yield.
+The second model was also constructed using bootstrapping and looks into the impact of genetically engineered cotton on total yield. In this model, GMO cotton is designated as the independent variable $X$ and total yield acts as the dependent variable $Y$.
 
 $$Y = 5.07X + 359.24$$
-The third model uses GMO cotton and total acres of cotton planted as predictors for total yield, where GMO cotton is $X_1$ and total acres is $X_2$.
 
-$$ Y =  5.98X_1 + 0.01X_2 + 178.70$$
-The last model uses GMO cotton and yield as predictors of total land used for cotton cultivation, where $X_1$ is GMO cotton and $X_2$ is yield. 
 
-$$Y = -159.52X_1 + 9.86X_2 + 18199.24$$
+## Simulating Non-GMO Cotton Usage
+
+The third model is a multiple linear regression model that uses two predictors: the percentage of GMO cotton planted and the total acres of cotton planted, denoted $X_1$ and $X_2$ respectively, to predict the total yield $Y$. 
+
+The error term, denoted as $\varepsilon$ represents the deviation between the true values and model predictions. The standard deviation of the error term can be estimated using the residual standard error (RSE) of 51.5, implying an approximate probability distribution of  $N(0,51.5^2)$ for the error term. 
+
+The goal of this model is to simulate the effect of land area on total yield while the percentage of GMO cotton is set to zero. This simulation aims to show the discrepancy in yield between genetically engineered cotton and non modified cotton. 
+
+
+$$Y =  5.98X_1 + 0.01X_2 + 178.70 + \varepsilon$$
+
+The last model is also a multiple linear regression model. It uses the two predictors: the percentage of GMO cotton planted and total yield, denoted as $X_1$ and $X_2$ respectively. This model is used to predict  the total land in acres used to plant cotton which is represented by the dependent variable $Y$. 
+
+The standard deviation for the error term in this model can be estimated using an RSE of 1774.72, so the probability distribution of the error term $\varepsilon$ can be estimated with $N(0, 1774.72^2)$. 
+
+The goal of this model is to simulate the effect of yield on total land usage while the percentage of GMO cotton is set to zero. This simulation aims to show the discrepancy in land usage between genetically engineered cotton and non modified cotton.
+
+$$Y = -159.52X_1 + 9.86X_2 + 18199.24 + \varepsilon$$
 
 # Results
 
-The first model $Y = 0.33X - 11.88$ depicts a positive relationship between GMO cotton and percent of crop abandonment. 
+The first model $Y = 0.33X - 11.88$, attempts to investigate the impact of GMO cotton on crop abandonment. The coefficient of 0.33 for GMO cotton is not statistically significant, with a p-value of 0.15. Thus, there is insignificant evidence to conclude that GMO cotton impacts crop abandonment. 
+
+The correlation coefficient between the two variables is close to 0, with a value of 0.30, which indicates a weak linear relationship. 
+The lack of significance may be due to the fact that a linear model may not capture the relationship between the two variables, as seen in the figure below. 
 ```{r}
 set.seed(90)
 
-model_land_efficiency <- function(formula, data, indices) {
-  d <- data[indices,]
-  fit <- lm(formula, data=d)
-  return(coef(fit))
-}
+fit <- lm(percent_abandoned ~ percent_gm, data = data)
 
-results <- boot(data=data, statistic = model_land_efficiency, R = 10000, formula=percent_abandoned~percent_gm)
-mean_coef <- colMeans(results$t)
+coefficients <- coef(fit)
 
-data |>
-  ggplot(aes(x=percent_gm, y=percent_abandoned)) +
+data %>%
+  ggplot(aes(x = percent_gm, y = percent_abandoned)) +
   geom_point() +
   theme_light() +
-  geom_abline(intercept = mean_coef[1], slope = mean_coef[2], color = "blue") +
-  labs(x="Percent of GMO Cotton", y="Percent of Crop Abandonment")
-
+  geom_abline(intercept = coefficients[1], slope = coefficients[2], color = "blue") +
+  labs(x = "Percent of GMO Cotton", y = "Percent of Crop Abandonment")
 ```
-
-The second model $Y = 5.07X + 359.24$ depicts a positive relationship between genetically engineered Upland cotton and total yield. 
+  
 ```{r}
 set.seed(47)
 
-model_yield <- function(formula, data, indices) {
-  d <- data[indices,]
-  fit <- lm(formula, data=d)
-  return(coef(fit))
-}
+fit <- lm(yield ~ percent_gm, data = data)
+coefficients <- coef(fit)
 
-results <- boot(data=data, statistic = model_yield, R = 10000, formula=yield~percent_gm)
-mean_coef <- colMeans(results$t)
-
-data |>
-  ggplot(aes(x=percent_gm, y=yield)) +
+data %>%
+  ggplot(aes(x = percent_gm, y = yield)) +
   geom_point() +
   theme_light() +
-  geom_abline(intercept = mean_coef[1], slope = mean_coef[2], color = "blue") +
-  labs(x="Percent of GMO Cotton", y="Total Yield")
+  geom_abline(intercept = coefficients[1], slope = coefficients[2], color = "blue") +
+  labs(x = "Percent of GMO Cotton", y = "Total Yield")
 ```
+In the second model, represented by the equation $Y = 5.07X + 359.24$, the coefficient 5.07 is statistically significant with a p-value of 7.741e-05. Thus, there is enough evidence of a positive relationship between GMO cotton and yield as seen in the figure below. 
+
+The third model was used to simulate hypothetical yield results if GMO cotton had not been employed. As seen in the figure below, the simulated Non-GMO yield is significantly lower than the yield resulting from genetically engineered cotton.  
 
 ```{r}
 set.seed(258)
@@ -178,9 +186,12 @@ data <- data |>
 
 data |>
   ggplot(aes(x = total_acres)) +
-  geom_point(aes(y = yield, color = "actual yield")) +
-  geom_point(aes(y = predicted_no_gm_yield, color = "predicted yield"))
+  theme_light() +
+  geom_point(aes(y = yield, color = "GMO Cotton Yield")) +
+  geom_point(aes(y = predicted_no_gm_yield, color = "Simulated Non GMO Cotton Yield")) +
+  labs(x = "Planted Acres", y = "Total Yield", color = "Crop Type")
 ```
+The last model was employed to simulate the hypothetical land usage of Non-GMO cotton. As depicted in the figure below, the simulated land usage is considerably higher than that of genetically engineered cotton.
 
 ```{r}
 set.seed(326)
@@ -199,10 +210,11 @@ data <- data |>
 
 data |>
   ggplot(aes(x = yield)) +
-  geom_point(aes(y = total_acres, color = "actual land use")) +
-  geom_point(aes(y = predicted_land_use, color = "predicted land use"))
+  theme_light() +
+  geom_point(aes(y = total_acres, color = "GMO Land Usage")) +
+  geom_point(aes(y = predicted_land_use, color = "(Simulated) Non GMO Land Usage")) +
+  labs(x = "Total Yield", y = "Total Land Usage", color = "Crop Type")
 ```
-
 # Discussion
 
 
