@@ -13,4 +13,4 @@ This paper performs data analysis on Upland cotton data sourced from the United 
 This repository is an R project. For reproducibility purposes, download the repository and access it through R-Studio.
 
 ## LLM Disclaimer
-No LLMs were used for this paper.
+No language learning models were used for this paper.
