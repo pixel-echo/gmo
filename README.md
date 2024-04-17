@@ -8,3 +8,6 @@ This paper performs data analysis on Upland cotton data sourced from the United 
 - `data` holds the clean and raw data used
 - `paper` all files needed to generate paper.pdf
 - `scripts` contains scripts for data cleaning, simmulation, modelling, and testing
+
+## Reproducibility
+This repository is an R project. For reproducibility purposes, download the repository and access it through R-Studio.
