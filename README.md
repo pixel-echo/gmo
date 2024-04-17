@@ -6,10 +6,5 @@ This paper performs data analysis on Upland cotton data sourced from the United 
 ## File Structure
 - `models` contains all models used in analysis
 - `data` contains the clean and raw data used
-  - clean_data.csv
-  - `raw_data`
 - `paper` contains all files needed to generate paper.pdf
-- `scripts` contains scripts for data cleaning, simmulation, modelling
-  - clean_data.R
-  - model.R
-  - simmulation.R
+- `scripts` contains scripts for data cleaning, simmulation, modelling, and testing
