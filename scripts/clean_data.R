@@ -1,7 +1,18 @@
+#### Preamble ####
+# Purpose: Clean the raw data.  
+# Author: Tara Chakkithara
+# Date: 18 April 2024
+# Contact: tara.chakkithara@mail.utoronto.ca
+# License: MIT
+# Pre-requisites: NA
+
+
+#### Workspace setup ####
 library(tidyverse)
 library(janitor)
 library(readxl)
 
+#### Clean raw data ####
 gmo_data <- read_csv('data/raw_data/gm_crops.csv')
 yield_data <- read_xlsx('data/raw_data/cotton_yield.xlsx', sheet = 3, skip = 7)
 

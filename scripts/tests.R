@@ -1,5 +1,18 @@
+#### Preamble ####
+# Purpose: Tests both models on simulated data. 
+# Author: Tara Chakkithara
+# Date: 18 April 2024
+# Contact: tara.chakkithara@mail.utoronto.ca
+# License: MIT
+# Pre-requisites: Must simulate a dataset before testing both models. 
+
+
+#### Workspace setup ####
 library(tidyverse)
 
+
+
+#### Test data ####
 simulated_data <- read_csv("data/simulated_data.csv")
 
 
