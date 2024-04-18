@@ -17,6 +17,8 @@ format:
     bibliography: references.bib
 ---
 
+{{< pagebreak >}}
+
 # Introduction
 
 Making up around 90% of all cotton consumed, Upland cotton is one of the largest agricultural industries worldwide. It is commonly used in fabric production but also has various other uses in kitchen projects and other applications [@NCSU].
@@ -82,7 +84,7 @@ data |>
   theme_light() +
   geom_bar(aes(y = total_acres), stat = "identity", position = "stack", width = 0.4) +
   geom_bar(aes(y = harvested_acres, fill = "Harvested Acres"), stat = "identity", position = "stack", width = 0.4) +
-  labs(x = "Year", y = "Upland Cotton Planted", fill = "")
+  labs(x = "Year", y = "Upland Cotton Planted (Acres)", fill = "")
 ```
 
 The percentage of abandoned cotton has a trend of increasing over time. In the year 2010 only 2.5% of the planted Upland cotton was abandoned compared to 2022 when around 48% of Upland cotton planted was abandoned. The mean percentage of cotton abandoned was 16% as seen in @fig-plot3.
@@ -139,7 +141,7 @@ data %>%
   geom_point() +
   theme_light() +
   geom_abline(intercept = coefficients[1], slope = coefficients[2], color = "blue") +
-  labs(x = "Percent of GMO Cotton", y = "Yield")
+  labs(x = "Percent of GMO Cotton", y = "Yield (Acres)")
 ```
 
 For the second model, the coefficients $\beta_2$ (intercept) and $\beta_3$ were estimated to be 21741.90 and -109.55 respectively. $\beta_3$ had a p-value of 0.0061, making it statistically significant. Thus, there is enough evidence to conclude that GMO cotton impacts the total acres of cotton planted negatively. This model is shown in @fig-plot6.
@@ -159,6 +161,8 @@ data %>%
   labs(x = "Percent of GMO Cotton", y = "Total Acres")
 
 ```
+
+{{< pagebreak >}}
 
 # Discussion
 
