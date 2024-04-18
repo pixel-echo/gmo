@@ -130,10 +130,8 @@ Using the data, the coefficients for the first model were estimated to be $\beta
 ```{r}
 #| label: fig-plot5
 #| fig-cap: Linear regression model of the effect of genetically engineered cotton on total yield.
-set.seed(90)
 
 fit <- lm(yield ~ percent_gm, data = data)
-
 coefficients <- coef(fit)
 
 data %>%
@@ -149,10 +147,8 @@ For the second model, the coefficients $\beta_2$ (intercept) and $\beta_3$ were 
 ```{r}
 #| label: fig-plot6
 #| fig-cap: Linear regression model of the effect of GMO cotton on total land usage. 
-set.seed(90)
 
 fit <- lm(total_acres ~ percent_gm, data = data)
-
 coefficients <- coef(fit)
 
 data %>%
